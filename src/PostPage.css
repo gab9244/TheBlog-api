@@ -1,0 +1,62 @@
+.postPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-left: 10px;
+}
+
+
+.postPage time,
+.author {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.image {
+    max-height: 200px;
+    display: flex;
+    overflow: hidden;
+
+}
+
+.image img {
+    object-fit: cover;
+    object-position: center center;
+    width: 70vw;
+}
+
+p {
+    letter-spacing: 1px;
+    word-spacing: 5px;
+    width: 70vw;
+    line-height: 1.5;
+    margin: 10px;
+    text-indent: 20px;
+    font-size: 18px;
+}
+
+.postPage a {
+    text-decoration: underline;
+}
+
+.editLink {
+    display: flex;
+    width: 100px;
+    height: 50px;
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+
+
+.editLink a {
+    color: white;
+    text-decoration: none;
+
+
+}
+
+@media screen and (min-width: 768px) {}
