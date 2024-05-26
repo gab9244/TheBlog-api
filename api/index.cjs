@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser')
 //Baixe o package multer para que possamos enviar os documentos para o middleware uploads
 const multer = require('multer')
 // dest e o destino dos arquivos, nesse caso enviaremos eles para uploads
-const uploadMiddleware = multer({dest: 'api/uploads/'})
+const uploadMiddleware = multer({dest: 'uploads/'})
 //Para mudar o final do nome do arquivo enviado usaremos fs
 const fs = require('fs')
 //Usamos salt para criptografar a senha
@@ -37,10 +37,10 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 //Usamos essa sintaxe para poder mostrar as imagens
-app.use('/api/uploads', express.static('api/uploads/'));
+app.use('/uploads', express.static('/uploads/'));
 require('dotenv').config()
 //Usando mongoose.connect junto da chave podemos nos conectar ao banco de dados do atlas
-const connectDB = require('../api/db/connect.cjs')
+const connectDB = require('./db/connect.cjs')
 app.use(express.static(path.join(process.cwd(), '/dist')))
 
 //Essa solicitação post funciona da seguinte maneira. Primeiro pegamos do corpo da solicitação o username e a password, depois usamos try e catch e caso esse dados passem pelas especificações que fizemos no User.cjs enviamos um status de 200 e os dados ao banco de dados, caso contrario apenas retornamos status 400 e um json com o erro
@@ -192,7 +192,8 @@ app.get('/post/:id', async(req,res) =>{
   res.json(postDoc)
 })
 app.get('*', (req,res) => res.sendFile(path.join(process.cwd(), '/dist/index.html')))
-const port = 4000
+
+const port = process.env.PORT || 4000;
 const start = async () =>{
     try {
        await connectDB(process.env.MONGO_URI)
