@@ -41,7 +41,7 @@ app.use('/uploads', express.static('/uploads/'));
 require('dotenv').config()
 //Usando mongoose.connect junto da chave podemos nos conectar ao banco de dados do atlas
 const connectDB = require('./db/connect.cjs')
-app.use(express.static(path.join(process.cwd(), '/dist')))
+// app.use(express.static(path.join(process.cwd(), '/dist')))
 
 //Essa solicitação post funciona da seguinte maneira. Primeiro pegamos do corpo da solicitação o username e a password, depois usamos try e catch e caso esse dados passem pelas especificações que fizemos no User.cjs enviamos um status de 200 e os dados ao banco de dados, caso contrario apenas retornamos status 400 e um json com o erro
 app.post('/register', async (req,res) =>{
@@ -191,7 +191,7 @@ app.get('/post/:id', async(req,res) =>{
   const postDoc =  await (await Post.findById(id)).populate('author', ['username'])
   res.json(postDoc)
 })
-app.get('*', (req,res) => res.sendFile(path.join(process.cwd(), '/dist/index.html')))
+// app.get('*', (req,res) => res.sendFile(path.join(process.cwd(), '/dist/index.html')))
 
 const port = process.env.PORT || 4000;
 const start = async () =>{
