@@ -8,6 +8,7 @@ const User = require('./models/User.cjs')
 const Post = require('./models/Post.cjs')
 const app = express()
 const jwt = require('jsonwebtoken')
+const path = require('path')
 //É necessário baixar o cookie-parser
 const cookieParser = require('cookie-parser')
 //Baixe o package multer para que possamos enviar os documentos para o middleware uploads
@@ -20,7 +21,19 @@ const fs = require('fs')
 const salt = bcrypt.genSaltSync(10)
 const secret = 'fvdfg3434fgdff4dfher4teg'
 //Quando lidamos com credenciais/senhas e tokens é necessário colocar mais informações como definir o valor de credentials para true e fornecer a origem das solicitações http://localhost:5173
-app.use(cors({credentials: true, origin: 'http://localhost:5173'}))
+const allowedOrigins = ['https://theblog-cekp.onrender.com','https://theblog-1.onrender.com','http://localhost:4000'];
+
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+}));
 app.use(express.json())
 app.use(cookieParser())
 //Usamos essa sintaxe para poder mostrar as imagens
@@ -28,6 +41,7 @@ app.use('/api/uploads', express.static('api/uploads/'));
 require('dotenv').config()
 //Usando mongoose.connect junto da chave podemos nos conectar ao banco de dados do atlas
 const connectDB = require('../api/db/connect.cjs')
+app.use(express.static(path.join(process.cwd(), '/dist')))
 
 //Essa solicitação post funciona da seguinte maneira. Primeiro pegamos do corpo da solicitação o username e a password, depois usamos try e catch e caso esse dados passem pelas especificações que fizemos no User.cjs enviamos um status de 200 e os dados ao banco de dados, caso contrario apenas retornamos status 400 e um json com o erro
 app.post('/register', async (req,res) =>{
@@ -177,7 +191,7 @@ app.get('/post/:id', async(req,res) =>{
   const postDoc =  await (await Post.findById(id)).populate('author', ['username'])
   res.json(postDoc)
 })
-
+app.get('*', (req,res) => res.sendFile(path.join(process.cwd(), '/dist/index.html')))
 const port = 4000
 const start = async () =>{
     try {
