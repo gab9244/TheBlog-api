@@ -21,7 +21,7 @@ const fs = require('fs')
 const salt = bcrypt.genSaltSync(10)
 const secret = 'fvdfg3434fgdff4dfher4teg'
 //Quando lidamos com credenciais/senhas e tokens é necessário colocar mais informações como definir o valor de credentials para true e fornecer a origem das solicitações http://localhost:5173
-const allowedOrigins = ['https://theblog-cekp.onrender.com','https://theblog-1.onrender.com','http://localhost:4000'];
+const allowedOrigins = ['https://theblog-4agb.onrender.com/','https://theblog-api.onrender.com/','http://localhost:4000'];
 
 
 app.use(cors({
