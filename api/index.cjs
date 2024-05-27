@@ -8,7 +8,7 @@ const User = require('./models/User.cjs')
 const Post = require('./models/Post.cjs')
 const app = express()
 const jwt = require('jsonwebtoken')
-const path = require('path')
+// const path = require('path')
 //É necessário baixar o cookie-parser
 const cookieParser = require('cookie-parser')
 //Baixe o package multer para que possamos enviar os documentos para o middleware uploads
@@ -21,7 +21,7 @@ const fs = require('fs')
 const salt = bcrypt.genSaltSync(10)
 const secret = 'fvdfg3434fgdff4dfher4teg'
 //Quando lidamos com credenciais/senhas e tokens é necessário colocar mais informações como definir o valor de credentials para true e fornecer a origem das solicitações http://localhost:5173
-const allowedOrigins = ['https://theblog-4agb.onrender.com/','https://theblog-api.onrender.com/','http://localhost:4000'];
+const allowedOrigins = ['https://theblog-4agb.onrender.com','https://theblog-api.onrender.com','http://localhost:4000'];
 
 
 app.use(cors({
