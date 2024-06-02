@@ -21,19 +21,27 @@ const fs = require('fs')
 const salt = bcrypt.genSaltSync(10)
 const secret = 'fvdfg3434fgdff4dfher4teg'
 //Quando lidamos com credenciais/senhas e tokens é necessário colocar mais informações como definir o valor de credentials para true e fornecer a origem das solicitações http://localhost:5173
-const allowedOrigins = ['https://theblog-4agb.onrender.com','https://theblog-api.onrender.com','http://localhost:4000', 'http://localhost:5173'];
 
-
-app.use(cors({
+const allowedOrigins = [
+    'https://theblog-4agb.onrender.com',
+    'https://theblog-api.onrender.com',
+    'http://localhost:4000',
+    'http://localhost:5173'
+  ];
+  
+  app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
     },
     credentials: true,
-}));
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  }));
 app.use(express.json())
 app.use(cookieParser())
 //Usamos essa sintaxe para poder mostrar as imagens
