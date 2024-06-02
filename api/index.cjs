@@ -1,11 +1,11 @@
 const express = require('express')
-
 //Usamos bcrypt para criptografar as senhas do usuarios.É necessário baixar o bcrypt com npm install bcrypt
 const bcrypt = require('bcrypt')
 //Cors é usado para simplificar o envio de dados por varias fontes. É necessário usa-lo pois os browsers geralmente dificultam o compatilamento e envio de dados e é por isso que o usamos no express.use()
 const  cors = require('cors')
 const User = require('./models/User.cjs')
 const Post = require('./models/Post.cjs')
+
 const app = express()
 const jwt = require('jsonwebtoken')
 // const path = require('path')
@@ -21,7 +21,7 @@ const fs = require('fs')
 const salt = bcrypt.genSaltSync(10)
 const secret = 'fvdfg3434fgdff4dfher4teg'
 //Quando lidamos com credenciais/senhas e tokens é necessário colocar mais informações como definir o valor de credentials para true e fornecer a origem das solicitações http://localhost:5173
-const allowedOrigins = ['https://theblog-4agb.onrender.com','https://theblog-api.onrender.com','http://localhost:4000'];
+const allowedOrigins = ['https://theblog-4agb.onrender.com','https://theblog-api.onrender.com','http://localhost:4000', 'http://localhost:5173'];
 
 
 app.use(cors({
@@ -184,14 +184,29 @@ app.get('/post', async (req,res)=>{
 
 })
 
-//2
-app.get('/post/:id', async(req,res) =>{
+//Assim que a solicitação para deletar é enviada deletamos o post pelo id que esta na url
+    app.delete('/post/:id', async (req,res) =>{
+        try {
+             const post = await Post.findByIdAndDelete(req.params.id)
+             if (!post) {
+                return res.status(404).json({ message: 'Post not found' });
+              }
+    
+        }catch(error){
+            res.status(404).json(error)
+        }
+    
+        
+     })
 
-    const {id} = req.params
+
+app.get('/post/:id', async(req,res) =>{
+  const {id} = req.params
   const postDoc =  await (await Post.findById(id)).populate('author', ['username'])
   res.json(postDoc)
 })
-// app.get('*', (req,res) => res.sendFile(path.join(process.cwd(), '/dist/index.html')))
+
+// app.get('*', (req,res) => res.sendFile(path.join(process.cwd(), '/dist/index.html'))) 
 
 const port = process.env.PORT || 4000;
 const start = async () =>{
@@ -199,6 +214,7 @@ const start = async () =>{
        await connectDB(process.env.MONGO_URI)
        app.listen(port, ()=>{
            console.log(`The Server is On ${port}`)
+         
        })
     } catch (error) {
        console.log(error)
