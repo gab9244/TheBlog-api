@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser')
 //Baixe o package multer para que possamos enviar os documentos para o middleware uploads
 const multer = require('multer')
 // dest e o destino dos arquivos, nesse caso enviaremos eles para uploads
-const uploadMiddleware = multer({dest: 'uploads/'})
+const uploadMiddleware = multer({dest: 'api/uploads/'})
 //Para mudar o final do nome do arquivo enviado usaremos fs
 const fs = require('fs')
 //Usamos salt para criptografar a senha
@@ -37,7 +37,7 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 //Usamos essa sintaxe para poder mostrar as imagens
-app.use('/uploads', express.static('/uploads/'));
+app.use('/api/uploads', express.static('api/uploads'));
 require('dotenv').config()
 //Usando mongoose.connect junto da chave podemos nos conectar ao banco de dados do atlas
 const connectDB = require('./db/connect.cjs')
