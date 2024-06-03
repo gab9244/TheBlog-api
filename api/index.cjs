@@ -193,19 +193,19 @@ app.get('/post', async (req,res)=>{
 })
 
 //Assim que a solicitação para deletar é enviada deletamos o post pelo id que esta na url
-    app.delete('/post/:id', async (req,res) =>{
-        try {
-             const post = await Post.findByIdAndDelete(req.params.id)
-             if (!post) {
-                return res.status(404).json({ message: 'Post not found' });
-              }
+    // app.delete('/post/:id', async (req,res) =>{
+    //     try {
+    //          const post = await Post.findByIdAndDelete(req.params.id)
+    //          if (!post) {
+    //             return res.status(404).json({ message: 'Post not found' });
+    //           }
     
-        }catch(error){
-            res.status(404).json(error)
-        }
+    //     }catch(error){
+    //         res.status(404).json(error)
+    //     }
     
         
-     })
+    //  })
 
 
 app.get('/post/:id', async(req,res) =>{
