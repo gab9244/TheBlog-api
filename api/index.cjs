@@ -25,36 +25,19 @@ const secret = 'fvdfg3434fgdff4dfher4teg'
 const allowedOrigins = [
     'https://theblog-4agb.onrender.com',
     'https://theblog-api.onrender.com',
-    'http://localhost:4000',
-    'http://localhost:5173'
+    'http://localhost:4000'
   ];
   
   app.use(cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
     },
     credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  }));
-
-  app.options('*', cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  }));
+}));
 
 app.use(express.json())
 app.use(cookieParser())
