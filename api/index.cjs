@@ -42,6 +42,20 @@ const allowedOrigins = [
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   }));
+
+  app.options('*', cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  }));
+
 app.use(express.json())
 app.use(cookieParser())
 //Usamos essa sintaxe para poder mostrar as imagens
@@ -193,19 +207,19 @@ app.get('/post', async (req,res)=>{
 })
 
 //Assim que a solicitação para deletar é enviada deletamos o post pelo id que esta na url
-    // app.delete('/post/:id', async (req,res) =>{
-    //     try {
-    //          const post = await Post.findByIdAndDelete(req.params.id)
-    //          if (!post) {
-    //             return res.status(404).json({ message: 'Post not found' });
-    //           }
+    app.delete('/post/:id', async (req,res) =>{
+        try {
+             const post = await Post.findByIdAndDelete(req.params.id)
+             if (!post) {
+                return res.status(404).json({ message: 'Post not found' });
+              }
     
-    //     }catch(error){
-    //         res.status(404).json(error)
-    //     }
+        }catch(error){
+            res.status(404).json(error)
+        }
     
         
-    //  })
+     })
 
 
 app.get('/post/:id', async(req,res) =>{
