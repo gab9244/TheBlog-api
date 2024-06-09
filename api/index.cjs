@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser')
 //Baixe o package multer para que possamos enviar os documentos para o middleware uploads
 const multer = require('multer')
 // dest e o destino dos arquivos, nesse caso enviaremos eles para uploads
-const uploadMiddleware = multer({dest: '/uploads'})
+const uploadMiddleware = multer({dest: 'uploads/'})
 //Para mudar o final do nome do arquivo enviado usaremos fs
 
 const fs = require('fs')
