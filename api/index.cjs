@@ -16,43 +16,42 @@ const multer = require('multer')
 // dest e o destino dos arquivos, nesse caso enviaremos eles para uploads
 const uploadMiddleware = multer({dest: 'uploads/'})
 //Para mudar o final do nome do arquivo enviado usaremos fs
-
+const bodyParser = require('body-parser');
+ 
 const fs = require('fs')
 //Usamos salt para criptografar a senha
 const salt = bcrypt.genSaltSync(10)
 const secret = 'fvdfg3434fgdff4dfher4teg'
 //Quando lidamos com credenciais/senhas e tokens é necessário colocar mais informações como definir o valor de credentials para true e fornecer a origem das solicitações http://localhost:5173
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-const allowedOrigins = [
-    'https://theblog-4agb.onrender.com',
-    // 'https://theblog-api.onrender.com',
-    // 'http://localhost:4000',
-    // 'http://localhost:5173',
-    
-  ];
-  
-  app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true,
+const allowedOrigins = ['https://theblog-4agb.onrender.com', 'https://theblog-api.onrender.com', 'http://localhost:5173'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://theblog-4agb.onrender.com');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 app.use(express.json())
 app.use(cookieParser())
 //Usamos essa sintaxe para poder mostrar as imagens
 app.use('/api/uploads', express.static('/api/uploads'));
 require('dotenv').config()
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'https://theblog-4agb.onrender.com');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-  });
+
 //Usando mongoose.connect junto da chave podemos nos conectar ao banco de dados do atlas
 const connectDB = require('./db/connect.cjs')
 // app.use(express.static(path.join(process.cwd(), '/dist')))
@@ -99,15 +98,20 @@ app.post('/login', async (req,res) =>{
   
 })
 
-// Primeiro pegamos o cookie chamado de token, depois usamos jwt para verificar se o token bate com o secret que usamos para criptrografa-lo se não bater retornamos um erro, caso contrário retornamos o json as informações como username e id, entenpedente do token bater ou não, também retornaremos um jsom com os cookies
-app.get('/profile', (req,res) =>{
-    const {token} = req.cookies
-    jwt.verify(token, secret, {}, (error,info)=>{
-        if(error) throw error
-        res.json(info)
-    })
+// Primeiro pegamos o cookie chamado de token, depois usamos jwt para verificar se o token bate com o secret que usamos para criptrografa-lo se não bater retornamos um erro, caso contrário retornamos o json as informações como username e id, entenpedente do token bater ou não, também retornaremos um json com os cookies
+app.get('/profile', (req, res) => {
+    const { token } = req.cookies;
+    if (!token) {
+      return res.status(401).json({ error: 'Token is missing' });
+    }
   
-})
+    jwt.verify(token, secret, {}, (error, info) => {
+      if (error) {
+        return res.status(403).json({ error: 'Invalid token' });
+      }
+      res.json(info);
+    });
+  });
     //Quando o usuario sair da sua conta o cookie chamado de token e limpo e um json dizendo ok é enviado
 app.get('/logout', (req,res) =>{
     res.cookie('token','').json('ok')
