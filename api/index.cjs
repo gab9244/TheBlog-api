@@ -27,7 +27,8 @@ const allowedOrigins = [
     'https://theblog-4agb.onrender.com',
     'https://theblog-api.onrender.com',
     'http://localhost:4000',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    
   ];
   
   app.use(cors({
@@ -46,6 +47,12 @@ app.use(cookieParser())
 //Usamos essa sintaxe para poder mostrar as imagens
 app.use('/api/uploads', express.static('/api/uploads'));
 require('dotenv').config()
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://theblog-4agb.onrender.com');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+  });
 //Usando mongoose.connect junto da chave podemos nos conectar ao banco de dados do atlas
 const connectDB = require('./db/connect.cjs')
 // app.use(express.static(path.join(process.cwd(), '/dist')))
