@@ -25,9 +25,9 @@ const secret = 'fvdfg3434fgdff4dfher4teg'
 
 const allowedOrigins = [
     'https://theblog-4agb.onrender.com',
-    'https://theblog-api.onrender.com',
-    'http://localhost:4000',
-    'http://localhost:5173',
+    // 'https://theblog-api.onrender.com',
+    // 'http://localhost:4000',
+    // 'http://localhost:5173',
     
   ];
   
