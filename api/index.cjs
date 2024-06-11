@@ -101,9 +101,9 @@ app.post('/login', async (req,res) =>{
 // Primeiro pegamos o cookie chamado de token, depois usamos jwt para verificar se o token bate com o secret que usamos para criptrografa-lo se não bater retornamos um erro, caso contrário retornamos o json as informações como username e id, entenpedente do token bater ou não, também retornaremos um json com os cookies
 app.get('/profile', (req, res) => {
     const { token } = req.cookies;
-    if (!token) {
-      return res.status(401).json({ error: 'Token is missing' });
-    }
+    // if (!token) {
+    //   return res.status(401).json({ error: 'Token is missing' });
+    // }
   
     jwt.verify(token, secret, {}, (error, info) => {
       if (error) {
