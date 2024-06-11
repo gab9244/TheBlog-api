@@ -26,7 +26,11 @@ const secret = 'fvdfg3434fgdff4dfher4teg'
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-const allowedOrigins = ['https://theblog-4agb.onrender.com', 'https://theblog-api.onrender.com', 'http://localhost:5173', 'http://localhost:4000'];
+
+app.use(express.json())
+app.use(cookieParser())
+
+const allowedOrigins = ['https://theblog-4agb.onrender.com'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -45,11 +49,8 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'https://theblog-4agb.onrender.com');
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', '*');
-  next();
+  next()
 });
-
-app.use(express.json())
-app.use(cookieParser())
 //Usamos essa sintaxe para poder mostrar as imagens
 app.use('/api/uploads', express.static('/api/uploads'));
 require('dotenv').config()
