@@ -26,7 +26,7 @@ const secret = 'fvdfg3434fgdff4dfher4teg'
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-const allowedOrigins = ['https://theblog-4agb.onrender.com', 'https://theblog-api.onrender.com', 'http://localhost:5173'];
+const allowedOrigins = ['https://theblog-4agb.onrender.com', 'https://theblog-api.onrender.com', 'http://localhost:5173', 'http://localhost:4000'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -41,6 +41,8 @@ app.use(cors({
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'https://theblog-4agb.onrender.com');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
@@ -101,9 +103,9 @@ app.post('/login', async (req,res) =>{
 // Primeiro pegamos o cookie chamado de token, depois usamos jwt para verificar se o token bate com o secret que usamos para criptrografa-lo se não bater retornamos um erro, caso contrário retornamos o json as informações como username e id, entenpedente do token bater ou não, também retornaremos um json com os cookies
 app.get('/profile', (req, res) => {
     const { token } = req.cookies;
-    // if (!token) {
-    //   return res.status(401).json({ error: 'Token is missing' });
-    // }
+    if (!token) {
+      return res.status(401).json({ error: 'Token is missing' });
+    }
   
     jwt.verify(token, secret, {}, (error, info) => {
       if (error) {
