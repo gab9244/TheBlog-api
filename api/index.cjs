@@ -32,45 +32,25 @@ app.use(cookieParser())
 
 const allowedOrigins = ['https://theblog-4agb.onrender.com'];
 
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   credentials: true,
-// }));
-
-// // res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Credentials', 'true');
-//   res.header('Access-Control-Allow-Origin', 'https://theblog-4agb.onrender.com');
-//   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-//   res.header('Access-Control-Allow-Headers', '*');
-//   next()
-// });
-
-const corsOptions = {
+app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // Allow cookies and credentials
-  methods: 'GET,POST,PUT,DELETE,OPTIONS',
-  allowedHeaders: '*', // Specify the headers you want to allow
-};
+  credentials: true,
+}));
 
-// Use CORS middleware with the specified options
-app.use(cors(corsOptions));
-
-// Middleware to handle preflight requests for all routes
-app.options('*', cors(corsOptions));
+// res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Origin', 'https://theblog-4agb.onrender.com');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,HEAD');
+  res.header('Access-Control-Allow-Headers', '*');
+  next()
+});
 //Usamos essa sintaxe para poder mostrar as imagens
 app.use('/api/uploads', express.static('/api/uploads'));
 require('dotenv').config()
