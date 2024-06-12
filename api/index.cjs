@@ -33,7 +33,7 @@ const secret = 'fvdfg3434fgdff4dfher4teg'
 app.use(express.json())
 app.use(cookieParser())
 
-const allowedOrigins = ['http://localhost:4000', 'http://localhost:5173'];
+const allowedOrigins = ['https://theblog-api.onrender.com/'];
 
 app.use(cors({
   origin: function (origin, callback) {
