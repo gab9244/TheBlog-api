@@ -33,7 +33,7 @@ const secret = 'fvdfg3434fgdff4dfher4teg'
 app.use(express.json())
 app.use(cookieParser())
 
-const allowedOrigins = ['https://theblog-api.onrender.com/'];
+const allowedOrigins = ['https://theblog-api.onrender.com'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -45,15 +45,13 @@ app.use(cors({
   },
   credentials: true,
 }));
-
-// res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Credentials', 'true');
-//   res.header('Access-Control-Allow-Origin', 'http://localhost:4000');
-//   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,HEAD');
-//   res.header('Access-Control-Allow-Headers', '*');
-//   next()
-// });
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Origin', 'https://theblog-api.onrender.com');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,HEAD');
+  res.header('Access-Control-Allow-Headers', '*');
+  next()
+});
 //Usamos essa sintaxe para poder mostrar as imagens
 app.use('/api/uploads', express.static(path.join(process.cwd(), '/uploads')));
 require('dotenv').config()
