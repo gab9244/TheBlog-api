@@ -1,7 +1,7 @@
   <h1>MyBlog Project</h1>
 
 <p>This project was my first MERN (Mongoose, Express, React, Node) project, and by far the hardest part was the deployment.</p>
-<img src="C:\Users\cliente\Desktop\meus projetos\TheBlog-api\api\screenshot\myblog-print-2.png" width="500px" alt="MyBlog Screenshot">
+<a href ="https://gab9244.github.io/MemoryGame/">![alt text](/screenshot/myblog-print-2.png)</a>
 
 <h2>Project Overview</h2>
 
