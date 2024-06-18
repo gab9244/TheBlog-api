@@ -1,8 +1,7 @@
   <h1>MyBlog Project</h1>
 
 <p>This project was my first MERN (Mongoose, Express, React, Node) project, and by far the hardest part was the deployment.</p>
-<a href ="https://gab9244.github.io/MemoryGame/">![alt text](/screenshot/myblog-print-2.png)</a>
-
+<a href="https://theblog-api.onrender.com"><img src="./screenshot/myblog-print-2.png" alt="MyBlog Screenshot" width="500px"></a>
 <h2>Project Overview</h2>
 
 <p>The project has two parts: the frontend and the backend. The frontend handles requests and displays data received from the backend. The backend/API responds to requests by either sending a JSON error if something is wrong or retrieving data from the database and sending it as JSON if everything is fine.</p>
